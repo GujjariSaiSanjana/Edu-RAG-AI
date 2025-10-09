@@ -1,0 +1,25 @@
+generator client {
+provider = "prisma-client-js"
+}
+
+datasource db {
+provider = "postgresql"
+url      = env("DATABASE_URL")
+}
+
+model Document {
+id        String   @id @default(uuid())
+filename  String
+filePath  String   @unique
+createdAt DateTime @default(now())
+chunks    DocumentChunk[]
+}
+
+model DocumentChunk {
+id         String   @id @default(uuid())
+content    String
+pageNumber Int
+qdrantId   String?
+documentId String
+document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+}
