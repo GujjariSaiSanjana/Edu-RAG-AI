@@ -19,14 +19,7 @@ services:
     restart: unless-stopped
     ports:
       - "6379:6379"
-  postgres-shadow:
-    image: ankane/pgvector:v0.5.1
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: shadow
-    ports:
-      - "5433:5432"
+
   qdrant:
     image: qdrant/qdrant:latest
     restart: unless-stopped
@@ -37,7 +30,6 @@ services:
     volumes:
       - qdrant_data:/qdrant/storage
     environment:
-      # generate your own: openssl rand -hex 32
       QDRANT__SERVICE__API_KEY: ${QDRANT_API_KEY:-}
       QDRANT__LOG_LEVEL: INFO
     healthcheck:
@@ -46,6 +38,18 @@ services:
       timeout: 10s
       retries: 3
 
+  ollama:
+    image: ollama/ollama:latest
+    container_name: edurag-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    environment:
+      - OLLAMA_ORIGINS=*
+    restart: unless-stopped
+
 volumes:
   pgdata:
   qdrant_data:
+  ollama:
