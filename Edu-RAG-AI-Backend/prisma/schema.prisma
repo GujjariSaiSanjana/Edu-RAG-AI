@@ -8,18 +8,18 @@ datasource db {
 }
 
 model Document {
-  id        String   @id @default(uuid())
-  filename  String
-  filePath  String   @unique
-  createdAt DateTime @default(now())
-  chunks    DocumentChunk[]
+  id         String   @id @default(cuid())
+  filename   String
+  storedPath String   @unique
+  uploadedAt DateTime @default(now())
+  chunks     DocumentChunk[]
 }
 
 model DocumentChunk {
-  id          String    @id @default(uuid())
-  content     String
-  pageNumber  Int
-  embedding   Unsupported("vector(384)")? // 384 for all-MiniLM-L6-v2
-  documentId  String
-  document    Document  @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  id           String    @id @default(cuid())
+  documentId   String
+  document     Document  @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  page         Int
+  content      String
+  @@index([documentId])
 }

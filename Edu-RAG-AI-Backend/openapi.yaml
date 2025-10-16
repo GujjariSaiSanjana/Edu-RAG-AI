@@ -1,0 +1,52 @@
+openapi: 3.0.3
+info:
+title: Edu-RAG-AI Backend
+version: 0.1.0
+servers:
+url: http://localhost:4000/api
+paths:
+/upload-pdf:
+post:
+summary: Upload a syllabus PDF
+requestBody:
+content:
+multipart/form-data:
+schema:
+type: object
+properties:
+file:
+type: string
+format: binary
+responses:
+"200":
+description: Document created
+content:
+application/json:
+schema:
+type: object
+properties:
+documentId:
+type: string
+chunks:
+type: integer
+/chat:
+post:
+summary: Chat with a document
+requestBody:
+required: true
+content:
+application/json:
+schema:
+type: object
+properties:
+message:
+type: string
+documentId:
+type: string
+responses:
+"200":
+description: Stream of tokens
+content:
+text/plain:
+schema:
+type: string

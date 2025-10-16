@@ -1,4 +1,4 @@
-import { qdrant, COLLECTION_NAME } from "../config/qdrant";
+import { qdrant, COLLECTION_NAME } from "../config/qdrant.js";
 import { randomUUID } from "crypto";
 
 export async function insertVectors(
